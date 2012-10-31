@@ -1,26 +1,40 @@
+"""This is the python code. When run, it will prompt for some values, and then print the result after
+several generations"""
+
 import random
 
+#The make series is just the method of creating the next generation.
+
 def make_values():
+	"""User prompt"""
 	global freqA 
 	global size
 	global cheater_prob
 	global altruist_prob
+	global lower_group
+	global upper_group
 	global number
 	global gen
 	freqA = float(raw_input("starting dominant allele (non-cheater) frequency?"))
 	size = int(raw_input("size of competing groups?"))
+	lower_group = float(raw_input("probability of a cheater group surviving?"))
+	upper_group = float(raw_input("probaility of an altruist group surviving?"))
 	cheater_prob = float(raw_input("what is the probability that a cheater survives in a surviving group?"))
 	altruist_prob = float(raw_input("what is the probability that an altruist survives in a surviving group?"))
 	number = int(raw_input("how many groups?"))
 	gen = int(raw_input("how many generations?"))
 
 def make_allele():
+	"""To guarantee random mating,
+	the alleles are drawn at random
+	from the general pool."""
 	if random.random() < freqA :
 		return "A"
 	else:
 		return "a"
 
 def make_individual():
+	"""An individual is two alleles"""
 	return make_allele() + make_allele()
 
 def make_all():
@@ -34,7 +48,7 @@ def make_all():
 	
 def test(group):
 	cheater_num = sum([1 for x in group if x == 'aa'])
-	surv_prob = 1 - (1.0/size)*cheater_num
+	surv_prob = lower_group + (upper_group - lower_group)*(1 - (1.0/size)*cheater_num)
 	if random.random() > surv_prob:
 		return (0, 0)
 	A = 0

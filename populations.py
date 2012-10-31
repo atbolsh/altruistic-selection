@@ -38,6 +38,10 @@ def make_individual():
 	return make_allele() + make_allele()
 
 def make_all():
+	"""Sets the jungle for the new generation;
+	to simplify things, each generation is the
+	same size. Also: not object oriented for
+	optimization."""
 	global life
 	life = []
 	for i in range(number):
@@ -47,8 +51,11 @@ def make_all():
 		life.append(group)
 	
 def test(group):
+	"""Who in the group survives? Also: the ambiguity of
+	the second line allows us to model Altruism as the
+	recessive allele by means of clever responses (opposite)"""
 	cheater_num = sum([1 for x in group if x == 'aa'])
-	surv_prob = lower_group + (upper_group - lower_group)*(1 - (1.0/size)*cheater_num)
+	surv_prob = lower_group + (upper_group - lower_group)*(1 - (1.0/size)*cheater_num) #Each cheater hurts the same.
 	if random.random() > surv_prob:
 		return (0, 0)
 	A = 0
@@ -67,6 +74,7 @@ def test(group):
 	return (A, a)
 
 def run():
+	"""Test each group; see the frequency change with time."""
 	global gen
 	if gen < 0:
 		print "A: %f" % freqA
